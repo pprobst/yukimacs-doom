@@ -42,8 +42,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
  - =doom-big-font= -- used for =doom-big-font-mode=; use this for
    presentations or streaming.
  - =doom-unicode-font= -- for unicode glyphs.
- - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they
- accept.
+ - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they accept.
  #+begin_src emacs-lisp :tangle yes
 (setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
       doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
