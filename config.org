@@ -59,8 +59,8 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 
 ** Theme
 #+begin_src emacs-lisp :tangle yes
-;;(setq doom-theme 'doom-tomorrow-night)
 (setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'yukimacs)
 #+end_src
 
 ** QoL
@@ -106,12 +106,10 @@ We need to do this otherwise the banner won't be transparent.
 #+begin_src emacs-lisp :tangle yes
 (defun solaire-mode-real-buffer-custom-p ()
   "Return t if the current buffer is the dashboard or scratch, or is a real (file-visiting) buffer."
-  (cond ((string= (buffer-name (buffer-base-buffer)) "*doom*") t)
-        ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
+  (cond ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
         ((string= (buffer-name (buffer-base-buffer)) "*scratch*") t)
         ((buffer-file-name (buffer-base-buffer)) t)
         (t nil)))
-
 (after! solaire-mode
   (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
 #+end_src
@@ -230,7 +228,7 @@ Custom dashboard instead of DOOM dashboard.
         ((,nil
             "Yukimacs on GitHub"
             "Open yukimacs' GitHub on your browser"
-            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs"))
+            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs-doom"))
             'default)
             (,nil
             "Open scratch buffer"

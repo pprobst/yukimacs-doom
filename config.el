@@ -13,8 +13,8 @@
     '(font-lock-comment-face :slant italic)
     '(font-lock-keyword-face :slant italic))
 
-;;(setq doom-theme 'doom-tomorrow-night)
 (setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'yukimacs)
 
 ;; For relative line numbers, set this to `relative`.
 (setq display-line-numbers-type t)
@@ -43,12 +43,10 @@
 
 (defun solaire-mode-real-buffer-custom-p ()
   "Return t if the current buffer is the dashboard or scratch, or is a real (file-visiting) buffer."
-  (cond ((string= (buffer-name (buffer-base-buffer)) "*doom*") t)
-        ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
+  (cond ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
         ((string= (buffer-name (buffer-base-buffer)) "*scratch*") t)
         ((buffer-file-name (buffer-base-buffer)) t)
         (t nil)))
-
 (after! solaire-mode
   (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
 
@@ -141,7 +139,7 @@
         ((,nil
             "Yukimacs on GitHub"
             "Open yukimacs' GitHub on your browser"
-            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs"))
+            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs-doom"))
             'default)
             (,nil
             "Open scratch buffer"
