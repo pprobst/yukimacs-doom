@@ -25,7 +25,9 @@
 * Installation
 Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] already installed, then:
 
-=git clone https://github.com/pprobst/yukimacs-doom ~/.config/doom=
+=git clone https://github.com/pprobst/yukimacs-doom.git ~/.config/doom=
+
+=git clone https://gitlab.com/protesilaos/iosevka-comfy.git ~/.local/share/fonts=
 
 * General
 ** User
