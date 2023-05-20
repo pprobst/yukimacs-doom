@@ -54,3 +54,6 @@
 (package! beacon)
 ;;(package! page-break-lines)
 (package! dashboard)
+(package! aas :recipe (:host github :repo "ymarco/auto-activating-snippets"))
+(package! laas :recipe (:host github :repo "tecosaur/LaTeX-auto-activating-snippets"))
+(package! keycast)

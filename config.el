@@ -154,3 +154,43 @@
   ;; With Emacs as daemon mode, when running `emacsclient`, open *dashboard* instead of *scratch*.
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (setq doom-fallback-buffer-name "*dashboard*")
+
+(after! company
+  (setq company-idle-delay 0.5
+        company-minimum-prefix-length 2)
+  (setq company-show-numbers t)
+  (add-hook 'evil-normal-state-entry-hook #'company-abort))
+
+(setq-default history-length 1000)
+(setq-default prescient-history-length 1000)
+
+(use-package! aas
+  :commands aas-mode)
+
+;; Same as above but specifically for LaTeX.
+(use-package! laas
+  :hook (LaTeX-mode . laas-mode)
+  :config
+  (defun laas-tex-fold-maybe ()
+    (unless (equal "/" aas-transient-snippet-key)
+      (+latex-fold-last-macro-a)))
+  (add-hook 'aas-post-snippet-expand-hook #'laas-tex-fold-maybe))
+
+(setq yas-triggers-in-field t)
+
+(use-package! keycast
+  :after doom-modeline
+  :commands keycast-mode
+  :config
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line."
+    :global t
+    (if keycast-mode
+        (progn
+          (add-hook 'pre-command-hook 'keycast--update t)
+          (add-to-list 'global-mode-string '("" keycast-mode-line " ")))
+      (remove-hook 'pre-command-hook 'keycast--update)
+      (setq global-mode-string (remove '("" keycast-mode-line " ") global-mode-string))))
+  (keycast-mode))
+
+(setq +latex-viewers '(zathura))
