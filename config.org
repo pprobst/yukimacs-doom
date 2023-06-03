@@ -26,6 +26,7 @@
   - [[#auto-activation-snippets][Auto-activation snippets]]
   - [[#yasnippet][YASnippet]]
   - [[#keycast][Keycast]]
+  - [[#imenu-list][Imenu-list]]
 - [[#latex][LaTeX]]
 
 * Installation
@@ -33,7 +34,7 @@ Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] alread
 
 =git clone https://github.com/pprobst/yukimacs-doom.git ~/.config/doom=
 
-=git clone https://gitlab.com/protesilaos/iosevka-comfy.git ~/.local/share/fonts=
+=git clone --depth 1 https://gitlab.com/protesilaos/iosevka-comfy.git ~/.local/share/fonts/iosevka-comfy=
 
 * General
 ** User
@@ -67,8 +68,18 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 
 ** Theme
 #+begin_src emacs-lisp :tangle yes
-(setq doom-theme 'modus-operandi)
+;; Some dark themes
 ;;(setq doom-theme 'yukimacs)
+;;(setq doom-theme 'modus-vivendi)
+;;(setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-gruvbox)
+;;(setq doom-theme 'doom-tomorrow-night)
+
+;; Some light themes
+(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'doom-one-light)
+;;(setq doom-theme 'doom-gruvbox-light)
+;;(setq doom-theme 'doom-tomorrow-day)
 #+end_src
 
 ** QoL
@@ -310,7 +321,27 @@ Show what you're doing on-screen.
   (keycast-mode))
 #+end_src
 
+** Imenu-list
+Imenu produces menus for accessing locations in documents, typically in the current buffer.
+'imenu-list' has imenu displayed as a vertical split that you can toggle show/hide.
+
+| COMMAND                 | DESCRIPTION                      | KEYBINDING |
+|-------------------------+----------------------------------+------------|
+| imenu-list-smart-toggle | /Toggle imenu shown in a sidebar/  | SPC t i    |
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq imenu-list-focus-after-activation t)
+(map! :leader
+      (:prefix ("t" . "Toggle")
+       :desc "Toggle imenu shown in a sidebar" "i" #'imenu-list-smart-toggle))
+#+END_SRC
+
 * LaTeX
 #+begin_src emacs-lisp :tangle yes
+;; Change file viewer.
 (setq +latex-viewers '(zathura))
+
+;; Using cdlatex’s snippets despite having yasnippet.
+(map! :map cdlatex-mode-map
+      :i "TAB" #'cdlatex-tab)
 #+end_src

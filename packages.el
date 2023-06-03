@@ -57,3 +57,5 @@
 (package! aas :recipe (:host github :repo "ymarco/auto-activating-snippets"))
 (package! laas :recipe (:host github :repo "tecosaur/LaTeX-auto-activating-snippets"))
 (package! keycast)
+;;(package! spacemacs-theme)
+(package! imenu-list)

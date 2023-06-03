@@ -13,8 +13,18 @@
     '(font-lock-comment-face :slant italic)
     '(font-lock-keyword-face :slant italic))
 
-(setq doom-theme 'modus-operandi)
+;; Some dark themes
 ;;(setq doom-theme 'yukimacs)
+;;(setq doom-theme 'modus-vivendi)
+;;(setq doom-theme 'doom-one)
+;;(setq doom-theme 'doom-gruvbox)
+;;(setq doom-theme 'doom-tomorrow-night)
+
+;; Some light themes
+(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'doom-one-light)
+;;(setq doom-theme 'doom-gruvbox-light)
+;;(setq doom-theme 'doom-tomorrow-day)
 
 ;; For relative line numbers, set this to `relative`.
 (setq display-line-numbers-type t)
@@ -193,4 +203,14 @@
       (setq global-mode-string (remove '("" keycast-mode-line " ") global-mode-string))))
   (keycast-mode))
 
+(setq imenu-list-focus-after-activation t)
+(map! :leader
+      (:prefix ("t" . "Toggle")
+       :desc "Toggle imenu shown in a sidebar" "i" #'imenu-list-smart-toggle))
+
+;; Change file viewer.
 (setq +latex-viewers '(zathura))
+
+;; Using cdlatex’s snippets despite having yasnippet.
+(map! :map cdlatex-mode-map
+      :i "TAB" #'cdlatex-tab)
