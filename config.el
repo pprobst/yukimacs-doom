@@ -14,14 +14,14 @@
     '(font-lock-keyword-face :slant italic))
 
 ;; Some dark themes
-;;(setq doom-theme 'yukimacs)
+(setq doom-theme 'yukimacs)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
 ;;(setq doom-theme 'doom-tomorrow-night)
 
 ;; Some light themes
-(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'modus-operandi)
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
@@ -207,6 +207,11 @@
 (map! :leader
       (:prefix ("t" . "Toggle")
        :desc "Toggle imenu shown in a sidebar" "i" #'imenu-list-smart-toggle))
+
+(use-package! info-colors
+  :commands (info-colors-fontify-node))
+
+(add-hook 'Info-selection-hook 'info-colors-fontify-node)
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))

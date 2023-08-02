@@ -59,3 +59,4 @@
 (package! keycast)
 ;;(package! spacemacs-theme)
 (package! imenu-list)
+(package! info-colors)
