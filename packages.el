@@ -60,3 +60,4 @@
 ;;(package! spacemacs-theme)
 (package! imenu-list)
 (package! info-colors)
+(package! blacken)

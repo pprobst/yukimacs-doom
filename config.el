@@ -213,6 +213,11 @@
 
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 
+(after! python
+  (setq blacken-args '("--line-length" "88" "--skip-string-normalization"))
+  (setq blacken-check-pyproject-thorough t)
+  (add-hook 'python-mode-hook 'blacken-mode))
+
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))
 

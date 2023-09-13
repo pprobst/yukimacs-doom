@@ -28,6 +28,7 @@
   - [[#keycast][Keycast]]
   - [[#imenu-list][Imenu-list]]
   - [[#info-colors][info-colors]]
+  - [[#blacken][blacken]]
 - [[#latex][LaTeX]]
 
 * Installation
@@ -344,6 +345,15 @@ Colorful manual pages.
   :commands (info-colors-fontify-node))
 
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
+#+END_SRC
+
+** blacken
+Code formatter for Python.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(after! python
+  (setq blacken-args '("--line-length" "88" "--skip-string-normalization"))
+  (setq blacken-check-pyproject-thorough t)
+  (add-hook 'python-mode-hook 'blacken-mode))
 #+END_SRC
 
 * LaTeX
