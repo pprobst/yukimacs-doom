@@ -270,11 +270,11 @@ Custom dashboard instead of DOOM dashboard.
 ** Company
 Faster completions.
 #+begin_src emacs-lisp :tangle yes
-(after! company
-  (setq company-idle-delay 0.5
-        company-minimum-prefix-length 2)
-  (setq company-show-numbers t)
-  (add-hook 'evil-normal-state-entry-hook #'company-abort))
+;(after! company
+;  (setq company-idle-delay 0.5
+;        company-minimum-prefix-length 2)
+;  (setq company-show-numbers t)
+;  (add-hook 'evil-normal-state-entry-hook #'company-abort))
 #+end_src
 
 ** Prescient

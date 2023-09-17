@@ -165,11 +165,11 @@
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (setq doom-fallback-buffer-name "*dashboard*")
 
-(after! company
-  (setq company-idle-delay 0.5
-        company-minimum-prefix-length 2)
-  (setq company-show-numbers t)
-  (add-hook 'evil-normal-state-entry-hook #'company-abort))
+;(after! company
+;  (setq company-idle-delay 0.5
+;        company-minimum-prefix-length 2)
+;  (setq company-show-numbers t)
+;  (add-hook 'evil-normal-state-entry-hook #'company-abort))
 
 (setq-default history-length 1000)
 (setq-default prescient-history-length 1000)
