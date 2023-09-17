@@ -214,9 +214,17 @@
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 
 (after! python
-  (setq blacken-args '("--line-length" "88" "--skip-string-normalization"))
+  (setq blacken-args '("--line-length" "79" "--skip-string-normalization"))
   (setq blacken-check-pyproject-thorough t)
   (add-hook 'python-mode-hook 'blacken-mode))
+
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))

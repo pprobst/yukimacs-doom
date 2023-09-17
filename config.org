@@ -29,6 +29,7 @@
   - [[#imenu-list][Imenu-list]]
   - [[#info-colors][info-colors]]
   - [[#blacken][blacken]]
+  - [[#github-copilot][GitHub Copilot]]
 - [[#latex][LaTeX]]
 
 * Installation
@@ -351,10 +352,22 @@ Colorful manual pages.
 Code formatter for Python.
 #+BEGIN_SRC emacs-lisp :tangle yes
 (after! python
-  (setq blacken-args '("--line-length" "88" "--skip-string-normalization"))
+  (setq blacken-args '("--line-length" "79" "--skip-string-normalization"))
   (setq blacken-check-pyproject-thorough t)
   (add-hook 'python-mode-hook 'blacken-mode))
 #+END_SRC
+
+** GitHub Copilot
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+#+END_SRC
+
 
 * LaTeX
 #+begin_src emacs-lisp :tangle yes
