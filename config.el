@@ -87,11 +87,16 @@
         :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
         :unnarrowed t)
     ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-        :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+        :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: project")
         :unnarrowed t)))
-(org-roam-dailies-capture-templates
-    '(("d" "default" entry "* %<%H:%M>: %?"
-        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-dailies-capture-templates
+        '(("d" "default daily" entry
+        "* %<%H:%M> %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d %A>\n#+filetags: daily"))
+        ("t" "task" entry
+        "* TODO %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d %A>\n#+filetags: daily")
+        :unnarrowed t)))
 :bind (("C-c n l" . org-roam-buffer-toggle)
         ("C-c n f" . org-roam-node-find)
         ("C-c n i" . org-roam-node-insert)
@@ -109,6 +114,13 @@
 (org-roam-setup)
 (require 'org-roam-dailies) ;; Ensure the keymap is available
 (org-roam-db-autosync-mode))
+
+(defun bms/org-roam-rg-search ()
+  "Search org-roam directory using consult-ripgrep. With live-preview."
+  (interactive)
+  (let ((consult-ripgrep "rg --null --multiline --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
+    (consult-ripgrep org-roam-directory)))
+(global-set-key (kbd "C-c rr") 'bms/org-roam-rg-search)
 
 (beacon-mode 1)
 
@@ -225,6 +237,11 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+;(use-package! org-fragtog
+;  :after! org
+;  :config
+;  (add-hook 'org-mode-hook 'org-fragtog-mode))
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))

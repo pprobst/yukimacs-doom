@@ -62,3 +62,4 @@
 (package! info-colors)
 (package! blacken)
 (package! copilot :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+(package! org-fragtog)

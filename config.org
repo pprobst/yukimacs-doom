@@ -30,6 +30,7 @@
   - [[#info-colors][info-colors]]
   - [[#blacken][blacken]]
   - [[#github-copilot][GitHub Copilot]]
+  - [[#org-fragtog][org-fragtog]]
 - [[#latex][LaTeX]]
 
 * Installation
@@ -157,6 +158,7 @@ We need to do this otherwise the banner won't be transparent.
     '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
 #+end_src
 
+
 ** Org-roam
 A plain-text personal knowledge management system.
 #+begin_src emacs-lisp :tangle yes
@@ -174,11 +176,16 @@ A plain-text personal knowledge management system.
         :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
         :unnarrowed t)
     ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-        :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+        :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: project")
         :unnarrowed t)))
-(org-roam-dailies-capture-templates
-    '(("d" "default" entry "* %<%H:%M>: %?"
-        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-dailies-capture-templates
+        '(("d" "default daily" entry
+        "* %<%H:%M> %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d %A>\n#+filetags: daily"))
+        ("t" "task" entry
+        "* TODO %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d %A>\n#+filetags: daily")
+        :unnarrowed t)))
 :bind (("C-c n l" . org-roam-buffer-toggle)
         ("C-c n f" . org-roam-node-find)
         ("C-c n i" . org-roam-node-insert)
@@ -196,6 +203,13 @@ A plain-text personal knowledge management system.
 (org-roam-setup)
 (require 'org-roam-dailies) ;; Ensure the keymap is available
 (org-roam-db-autosync-mode))
+
+(defun bms/org-roam-rg-search ()
+  "Search org-roam directory using consult-ripgrep. With live-preview."
+  (interactive)
+  (let ((consult-ripgrep "rg --null --multiline --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
+    (consult-ripgrep org-roam-directory)))
+(global-set-key (kbd "C-c rr") 'bms/org-roam-rg-search)
 #+end_src
 
 
@@ -368,6 +382,14 @@ Code formatter for Python.
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+END_SRC
 
+** org-fragtog
+Automatically toggle Org mode LaTeX fragment previews as the cursor enters and exits them.
+#+BEGIN_SRC emacs-lisp :tangle yes
+;(use-package! org-fragtog
+;  :after! org
+;  :config
+;  (add-hook 'org-mode-hook 'org-fragtog-mode))
+#+END_SRC
 
 * LaTeX
 #+begin_src emacs-lisp :tangle yes
