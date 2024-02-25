@@ -40,6 +40,8 @@ Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] alread
 
 =git clone --depth 1 https://gitlab.com/protesilaos/iosevka-comfy.git ~/.local/share/fonts/iosevka-comfy=
 
+Attention: before starting daemon mode, make sure to have =npm= installed and then =M-x copilot-install-server= otherwise daemon mode will hang.
+
 * General
 ** User
 Some functionality uses this to identify you, e.g. GPG configuration, email clients, file templates and snippets. It is optional.
@@ -57,9 +59,9 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
  - =doom-unicode-font= -- for unicode glyphs.
  - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they accept.
  #+begin_src emacs-lisp :tangle yes
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 20))
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
+      doom-big-font (font-spec :family "Iosevka Comfy" :size 18))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -87,6 +89,21 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_src
 
 ** QoL
+*** Indent guides
+#+begin_src emacs-lisp :tangle yes
+(use-package! indent-bars
+  :hook ((prog-mode) . indent-bars-mode)) ; or whichever modes you prefer
+(setq
+    indent-bars-color '(highlight :face-bg t :blend 0.15)
+    indent-bars-pattern "."
+    indent-bars-width-frac 0.5
+    indent-bars-pad-frac 0.25
+    indent-bars-zigzag nil
+    indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+    indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+    indent-bars-display-on-blank-lines t)
+#+end_src
+
 *** Display Line Numbers
 #+begin_src emacs-lisp :tangle yes
 ;; For relative line numbers, set this to `relative`.

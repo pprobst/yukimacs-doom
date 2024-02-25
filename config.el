@@ -1,9 +1,9 @@
 ;(setq user-full-name "pprobst"
 ;      user-mail-address "pprobst@insiberia.net")
 
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 20))
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
+      doom-big-font (font-spec :family "Iosevka Comfy" :size 18))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -25,6 +25,18 @@
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
+
+(use-package! indent-bars
+  :hook ((prog-mode) . indent-bars-mode)) ; or whichever modes you prefer
+(setq
+    indent-bars-color '(highlight :face-bg t :blend 0.15)
+    indent-bars-pattern "."
+    indent-bars-width-frac 0.5
+    indent-bars-pad-frac 0.25
+    indent-bars-zigzag nil
+    indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1) ; blend=1: blend with BG only
+    indent-bars-highlight-current-depth '(:blend 0.5) ; pump up the BG blend on current
+    indent-bars-display-on-blank-lines t)
 
 ;; For relative line numbers, set this to `relative`.
 (setq display-line-numbers-type t)

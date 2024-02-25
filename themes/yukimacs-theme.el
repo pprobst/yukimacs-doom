@@ -54,7 +54,7 @@ Can be an integer to determine the exact padding."
    ;; bg and base8 is a starker fg. For example, if bg is light grey and fg is
    ;; dark grey, base0 should be white and base8 should be black.
    (base0      '("#000000" "black"       "black"        ))
-   (base1      '("#0a0a0a" "#0a0a0a"     "brightblack"  ))
+   (base1      '("#121212" "#121212"     "brightblack"  ))
    (base2      '("#131313" "#141414"     "brightblack"  ))
    (base3      '("#171717" "#1a1a1a"     "brightblack"  ))
    (base4      '("#757575" "#3f3f3f"     "brightblack"  ))
@@ -132,7 +132,6 @@ Can be an integer to determine the exact padding."
     :background modeline-bg-inactive :foreground modeline-fg-alt
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive)))
    (mode-line-emphasis :foreground (if yukimacs-brighter-modeline base8 highlight))
-
    ;;;; css-mode <built-in> / scss-mode
    (css-proprietary-property :foreground orange)
    (css-property             :foreground green)
