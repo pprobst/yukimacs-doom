@@ -58,10 +58,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
    presentations or streaming.
  - =doom-unicode-font= -- for unicode glyphs.
  - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they accept.
+
  #+begin_src emacs-lisp :tangle yes
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 18))
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
+      doom-big-font (font-spec :family "Iosevka Comfy" :size 22))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -76,6 +77,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+begin_src emacs-lisp :tangle yes
 ;; Some dark themes
 (setq doom-theme 'yukimacs)
+;;(setq doom-theme 'modus-vivendi-tinted)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
@@ -83,6 +85,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 
 ;; Some light themes
 ;;(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'modus-operandi-tinted)
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
@@ -152,6 +155,11 @@ We need to do this otherwise the banner won't be transparent.
         (t nil)))
 (after! solaire-mode
   (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
+#+end_src
+
+*** Disable lsp-lens-mode for performance
+#+begin_src emacs-lisp :tangle yes
+(setq lsp-lens-enable nil)
 #+end_src
 
 * Dired

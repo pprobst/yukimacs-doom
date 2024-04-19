@@ -1,9 +1,9 @@
 ;(setq user-full-name "pprobst"
 ;      user-mail-address "pprobst@insiberia.net")
 
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 18))
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
+      doom-big-font (font-spec :family "Iosevka Comfy" :size 22))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -15,6 +15,7 @@
 
 ;; Some dark themes
 (setq doom-theme 'yukimacs)
+;;(setq doom-theme 'modus-vivendi-tinted)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
@@ -22,6 +23,7 @@
 
 ;; Some light themes
 ;;(setq doom-theme 'modus-operandi)
+;;(setq doom-theme 'modus-operandi-tinted)
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
@@ -71,6 +73,8 @@
         (t nil)))
 (after! solaire-mode
   (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
+
+(setq lsp-lens-enable nil)
 
 (setq dired-open-extensions '(("jpg" . "nsxiv")
                               ("png" . "nsxiv")
