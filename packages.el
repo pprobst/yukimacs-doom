@@ -63,3 +63,4 @@
 (package! blacken)
 (package! copilot :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 (package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
+(package! modus-themes)
