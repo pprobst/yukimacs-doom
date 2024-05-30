@@ -1,9 +1,9 @@
 ;(setq user-full-name "pprobst"
 ;      user-mail-address "pprobst@insiberia.net")
 
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 16)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 16)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 22))
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
+      doom-big-font (font-spec :family "Iosevka Comfy" :size 20))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -14,8 +14,8 @@
     '(font-lock-keyword-face :slant italic))
 
 ;; Some dark themes
-(setq doom-theme 'yukimacs)
-;;(setq doom-theme 'modus-vivendi-tinted)
+;;(setq doom-theme 'yukimacs)
+(setq doom-theme 'modus-vivendi-tinted)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
@@ -258,6 +258,17 @@
 ;  :after! org
 ;  :config
 ;  (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+(require 'pyenv-mode)
+
+(defun projectile-pyenv-mode-set ()
+  "Set pyenv version matching project name."
+  (let ((project (projectile-project-name)))
+    (if (member project (pyenv-mode-versions))
+        (pyenv-mode-set project)
+      (pyenv-mode-unset))))
+
+(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))
