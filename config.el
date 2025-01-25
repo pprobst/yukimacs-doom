@@ -259,16 +259,8 @@
 ;  :config
 ;  (add-hook 'org-mode-hook 'org-fragtog-mode))
 
-(require 'pyenv-mode)
-
-(defun projectile-pyenv-mode-set ()
-  "Set pyenv version matching project name."
-  (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-      (pyenv-mode-unset))))
-
-(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
+; (require 'elcord)
+; (elcord-mode)
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))

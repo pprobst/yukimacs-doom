@@ -31,7 +31,7 @@
   - [[#blacken][blacken]]
   - [[#github-copilot][GitHub Copilot]]
   - [[#org-fragtog][org-fragtog]]
-- [[#integrate-pyenv-with-projectile][Integrate pyenv with projectile]]
+  - [[#elcord][elcord]]
 - [[#latex][LaTeX]]
 
 * Installation
@@ -417,19 +417,12 @@ Automatically toggle Org mode LaTeX fragment previews as the cursor enters and e
 ;  (add-hook 'org-mode-hook 'org-fragtog-mode))
 #+END_SRC
 
-* Integrate pyenv with projectile
-#+begin_src emacs-lisp :tangle yes
-(require 'pyenv-mode)
-
-(defun projectile-pyenv-mode-set ()
-  "Set pyenv version matching project name."
-  (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-      (pyenv-mode-unset))))
-
-(add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set)
-#+end_src
+** elcord
+Discord rich presence. Disabled by default.
+#+BEGIN_SRC emacs-lisp :tangle yes
+; (require 'elcord)
+; (elcord-mode)
+#+END_SRC
 
 * LaTeX
 #+begin_src emacs-lisp :tangle yes
