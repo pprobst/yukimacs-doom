@@ -281,6 +281,11 @@
         :models '(llama-3.3-70b-versatile
                  deepseek-r1-distill-llama-70b)))
 
+(use-package! gptel-quick
+  :after gptel)
+
 (map! :leader
       "gps" 'gptel-send
-      "gpm" 'gptel-menu)
+      "gpm" 'gptel-menu
+      "gpr" 'gptel-rewrite
+      "gpq" 'gptel-quick)
