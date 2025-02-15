@@ -33,6 +33,7 @@
   - [[#org-fragtog][org-fragtog]]
   - [[#elcord][elcord]]
 - [[#latex][LaTeX]]
+- [[#gptel][gptel]]
 
 * Installation
 Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] already installed, then:
@@ -61,9 +62,9 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
  - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they accept.
 
  #+begin_src emacs-lisp :tangle yes
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 20))
+(setq doom-font (font-spec :family "Iosevka Comfy Motion" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Motion Duo" :size 14)
+      doom-big-font (font-spec :family "Iosevka Comfy Motion" :size 20))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -432,4 +433,23 @@ Discord rich presence. Disabled by default.
 ;; Using cdlatex’s snippets despite having yasnippet.
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
+#+end_src
+
+* gptel
+#+begin_src emacs-lisp :tangle yes
+(use-package! gptel)
+
+(setq gptel-model 'llama-3.3-70b-versatile
+      gptel-backend
+      (gptel-make-openai "Groq"
+        :host "api.groq.com"
+        :endpoint "/openai/v1/chat/completions"
+        :stream t
+        :key (getenv "GROQ_API_KEY")
+        :models '(llama-3.3-70b-versatile
+                 deepseek-r1-distill-llama-70b)))
+
+(map! :leader
+      "gps" 'gptel-send
+      "gpm" 'gptel-menu)
 #+end_src

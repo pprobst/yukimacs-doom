@@ -1,9 +1,9 @@
 ;(setq user-full-name "pprobst"
 ;      user-mail-address "pprobst@insiberia.net")
 
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy" :size 20))
+(setq doom-font (font-spec :family "Iosevka Comfy Motion" :size 14)
+      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Motion Duo" :size 14)
+      doom-big-font (font-spec :family "Iosevka Comfy Motion" :size 20))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -268,3 +268,19 @@
 ;; Using cdlatex’s snippets despite having yasnippet.
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
+
+(use-package! gptel)
+
+(setq gptel-model 'llama-3.3-70b-versatile
+      gptel-backend
+      (gptel-make-openai "Groq"
+        :host "api.groq.com"
+        :endpoint "/openai/v1/chat/completions"
+        :stream t
+        :key (getenv "GROQ_API_KEY")
+        :models '(llama-3.3-70b-versatile
+                 deepseek-r1-distill-llama-70b)))
+
+(map! :leader
+      "gps" 'gptel-send
+      "gpm" 'gptel-menu)

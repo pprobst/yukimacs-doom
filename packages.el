@@ -65,3 +65,4 @@
 (package! indent-bars :recipe (:host github :repo "jdtsmith/indent-bars"))
 (package! modus-themes)
 (package! elcord)
+(package! gptel)
