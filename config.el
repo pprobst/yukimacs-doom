@@ -289,3 +289,7 @@
       "gpm" 'gptel-menu
       "gpr" 'gptel-rewrite
       "gpq" 'gptel-quick)
+
+(use-package aider
+  :config
+  (setq aider-args '("--model" "groq/llama-3.3-70b-versatile")))

@@ -34,6 +34,7 @@
   - [[#elcord][elcord]]
 - [[#latex][LaTeX]]
 - [[#gptel][gptel]]
+- [[#aiderel][aider.el]]
 
 * Installation
 Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] already installed, then:
@@ -457,4 +458,11 @@ Discord rich presence. Disabled by default.
       "gpm" 'gptel-menu
       "gpr" 'gptel-rewrite
       "gpq" 'gptel-quick)
+#+end_src
+
+* aider.el
+#+begin_src emacs-lisp :tangle yes
+(use-package aider
+  :config
+  (setq aider-args '("--model" "groq/llama-3.3-70b-versatile")))
 #+end_src
