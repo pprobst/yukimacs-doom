@@ -8,9 +8,11 @@
 * Table of Contents :TOC:
 - [[#installation][Installation]]
 - [[#general][General]]
+  - [[#shell-configuration][Shell configuration]]
   - [[#user][User]]
   - [[#font][Font]]
   - [[#theme][Theme]]
+  - [[#dashboard][Dashboard]]
   - [[#qol][QoL]]
 - [[#dired][Dired]]
   - [[#file-associations][File associations]]
@@ -20,20 +22,15 @@
 - [[#packages][Packages]]
   - [[#beacon][Beacon]]
   - [[#treemacs][Treemacs]]
-  - [[#dashboard][Dashboard]]
-  - [[#company][Company]]
-  - [[#prescient][Prescient]]
+  - [[#history-length][History length]]
   - [[#auto-activation-snippets][Auto-activation snippets]]
   - [[#yasnippet][YASnippet]]
   - [[#keycast][Keycast]]
   - [[#imenu-list][Imenu-list]]
   - [[#info-colors][info-colors]]
-  - [[#blacken][blacken]]
-  - [[#github-copilot][GitHub Copilot]]
-  - [[#org-fragtog][org-fragtog]]
-  - [[#elcord][elcord]]
+  - [[#ruff-format][ruff-format]]
 - [[#latex][LaTeX]]
-- [[#gptel][gptel]]
+- [[#python-lsp-configuration][Python LSP Configuration]]
 
 * Installation
 Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] already installed, then:
@@ -42,9 +39,15 @@ Make sure you have [[https://github.com/doomemacs/doomemacs][Doom Emacs]] alread
 
 =git clone --depth 1 https://gitlab.com/protesilaos/iosevka-comfy.git ~/.local/share/fonts/iosevka-comfy=
 
-Attention: before starting daemon mode, make sure to have =npm= installed and then =M-x copilot-install-server= otherwise daemon mode will hang.
-
 * General
+** Shell configuration
+Fix Fish shell compatibility issues (non-POSIX shell).
+#+begin_src emacs-lisp :tangle yes
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shell "/usr/bin/fish")
+(setq-default explicit-shell-file-name "/usr/bin/fish")
+#+end_src
+
 ** User
 Some functionality uses this to identify you, e.g. GPG configuration, email clients, file templates and snippets. It is optional.
 #+begin_src emacs-lisp :tangle yes
@@ -62,9 +65,9 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
  - =doom-serif-font= -- for the =fixed-pitch-serif= face; See =C-h v doom-font= for documentation and more examples of what they accept.
 
  #+begin_src emacs-lisp :tangle yes
-(setq doom-font (font-spec :family "Iosevka Comfy Motion" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Motion Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy Motion" :size 20))
+(setq doom-font (font-spec :family "Aporetic Sans Mono" :size 15)
+      doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono" :size 15)
+      doom-big-font (font-spec :family "Aporetic Sans Mono" :size 20))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -79,11 +82,12 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+begin_src emacs-lisp :tangle yes
 ;; Some dark themes
 ;;(setq doom-theme 'yukimacs)
-(setq doom-theme 'modus-vivendi-tinted)
+;;(setq doom-theme 'modus-vivendi-tinted)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
 ;;(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-tokyo-night)
 
 ;; Some light themes
 ;;(setq doom-theme 'modus-operandi)
@@ -91,6 +95,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
+#+end_src
+
+** Dashboard
+#+begin_src emacs-lisp :tangle yes
+(setq fancy-splash-image "~/.config/doom/banners/yukimacs-logo-classic-smaller.png")
 #+end_src
 
 ** QoL
@@ -124,11 +133,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
        :desc "Edit doom packages.el" "p" #'(lambda () (interactive) (find-file "~/.config/doom/packages.el"))))
 #+end_src
 
-*** Show parent parentheses
-#+begin_src emacs-lisp :tangle yes
-(show-paren-mode 1)
-#+end_src
-
 *** Switches cursor automatically to new window
 #+begin_src emacs-lisp :tangle yes
 (defun split-and-follow-horizontally ()
@@ -144,19 +148,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
     (balance-windows)
     (other-window 1))
 (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
-#+end_src
-
-*** Disable solaire-mode in dashboard
-We need to do this otherwise the banner won't be transparent.
-#+begin_src emacs-lisp :tangle yes
-(defun solaire-mode-real-buffer-custom-p ()
-  "Return t if the current buffer is the dashboard or scratch, or is a real (file-visiting) buffer."
-  (cond ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
-        ((string= (buffer-name (buffer-base-buffer)) "*scratch*") t)
-        ((buffer-file-name (buffer-base-buffer)) t)
-        (t nil)))
-(after! solaire-mode
-  (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
 #+end_src
 
 *** Disable lsp-lens-mode for performance
@@ -177,14 +168,13 @@ We need to do this otherwise the banner won't be transparent.
 * Org
 ** Org mode
 #+begin_src emacs-lisp :tangle yes
-(custom-set-faces
-    '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-    '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
-    '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
-    '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
-    '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+(custom-set-faces!
+    '(org-level-1 :inherit outline-1 :height 1.3)
+    '(org-level-2 :inherit outline-2 :height 1.2)
+    '(org-level-3 :inherit outline-3 :height 1.1)
+    '(org-level-4 :inherit outline-4 :height 1.0)
+    '(org-level-5 :inherit outline-5 :height 1.0))
 #+end_src
-
 
 ** Org-roam
 A plain-text personal knowledge management system.
@@ -258,71 +248,10 @@ Display files in a tree-like structure.
     ("C-x t 1" . treemacs-select-window)))
 #+end_src
 
-** Dashboard
-Custom dashboard instead of DOOM dashboard.
-#+begin_src emacs-lisp :tangle yes
-(use-package! dashboard
-:preface
-(defun create-scratch-buffer ()
-    "Create a scratch buffer"
-    (interactive)
-    (switch-to-buffer (get-buffer-create "*scratch*"))
-    (lisp-interaction-mode))
-:config
-(dashboard-setup-startup-hook)
-(dashboard-modify-heading-icons '((recents . "file-text")
-                                    (bookmarks . "book")))
-;(setq dashboard-banner-logo-title "Y U K I M A C S")
-(setq dashboard-banner-logo-title "\n")
-(setq dashboard-startup-banner "~/.config/doom/banners/yukimacs-logo-classic-alt.png")
-(setq dashboard-center-content t)
-;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
-;(setq dashboard-set-footer nil)
-(setq dashboard-footer-messages '("\"It's a Wonderful Everyday!\""))
-(setq dashboard-footer-icon "")
-(setq dashboard-set-navigator t)
-(setq dashboard-set-heading-icons t)
-(setq dashboard-set-file-icons t)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)))
-(setq dashboard-navigator-buttons
-        `(;; line1
-        ((,nil
-            "Yukimacs on GitHub"
-            "Open yukimacs' GitHub on your browser"
-            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs-doom"))
-            'default)
-            (,nil
-            "Open scratch buffer"
-            "Switch to the scratch buffer"
-            (lambda (&rest _) (create-scratch-buffer))
-            'default)
-            (nil
-            "Open config.org"
-            "Open yukimacs' config file for easy editing"
-              (lambda (&rest _) (find-file "~/.config/doom/config.org"))
-              'default)))))
-  ;; With Emacs as daemon mode, when running `emacsclient`, open *dashboard* instead of *scratch*.
-(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-(setq doom-fallback-buffer-name "*dashboard*")
-#+end_src
-
-** Company
-Faster completions.
-#+begin_src emacs-lisp :tangle yes
-;(after! company
-;  (setq company-idle-delay 0.5
-;        company-minimum-prefix-length 2)
-;  (setq company-show-numbers t)
-;  (add-hook 'evil-normal-state-entry-hook #'company-abort))
-#+end_src
-
-** Prescient
-Improve memory.
+** History length
+Remember more minibuffer/command history.
 #+begin_src emacs-lisp :tangle yes
 (setq-default history-length 1000)
-(setq-default prescient-history-length 1000)
 #+end_src
 
 ** Auto-activation snippets
@@ -389,40 +318,11 @@ Colorful manual pages.
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 #+END_SRC
 
-** blacken
-Code formatter for Python.
+** ruff-format
+Configure ruff as the Python formatter (built into Doom's Python module).
+Format-on-save is already enabled via the =(format +onsave)= flag in init.el.
 #+BEGIN_SRC emacs-lisp :tangle yes
-(after! python
-  (setq blacken-args '("--line-length" "79" "--skip-string-normalization"))
-  (setq blacken-check-pyproject-thorough t)
-  (add-hook 'python-mode-hook 'blacken-mode))
-#+END_SRC
-
-** GitHub Copilot
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
-#+END_SRC
-
-** org-fragtog
-Automatically toggle Org mode LaTeX fragment previews as the cursor enters and exits them.
-#+BEGIN_SRC emacs-lisp :tangle yes
-;(use-package! org-fragtog
-;  :after! org
-;  :config
-;  (add-hook 'org-mode-hook 'org-fragtog-mode))
-#+END_SRC
-
-** elcord
-Discord rich presence. Disabled by default.
-#+BEGIN_SRC emacs-lisp :tangle yes
-; (require 'elcord)
-; (elcord-mode)
+(set-formatter! 'ruff :modes '(python-mode python-ts-mode))
 #+END_SRC
 
 * LaTeX
@@ -435,26 +335,8 @@ Discord rich presence. Disabled by default.
       :i "TAB" #'cdlatex-tab)
 #+end_src
 
-* gptel
+* Python LSP Configuration
+Configure basedpyright as the language server for Python.
 #+begin_src emacs-lisp :tangle yes
-(use-package! gptel)
-
-(setq gptel-model 'llama-3.3-70b-versatile
-      gptel-backend
-      (gptel-make-openai "Groq"
-        :host "api.groq.com"
-        :endpoint "/openai/v1/chat/completions"
-        :stream t
-        :key (getenv "GROQ_API_KEY")
-        :models '(llama-3.3-70b-versatile
-                 deepseek-r1-distill-llama-70b)))
-
-(use-package! gptel-quick
-  :after gptel)
-
-(map! :leader
-      "gps" 'gptel-send
-      "gpm" 'gptel-menu
-      "gpr" 'gptel-rewrite
-      "gpq" 'gptel-quick)
+(setq lsp-pyright-langserver-command "basedpyright")
 #+end_src

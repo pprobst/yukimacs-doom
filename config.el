@@ -1,9 +1,13 @@
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shell "/usr/bin/fish")
+(setq-default explicit-shell-file-name "/usr/bin/fish")
+
 ;(setq user-full-name "pprobst"
 ;      user-mail-address "pprobst@insiberia.net")
 
-(setq doom-font (font-spec :family "Iosevka Comfy Motion" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Motion Duo" :size 14)
-      doom-big-font (font-spec :family "Iosevka Comfy Motion" :size 20))
+(setq doom-font (font-spec :family "Aporetic Sans Mono" :size 15)
+      doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono" :size 15)
+      doom-big-font (font-spec :family "Aporetic Sans Mono" :size 20))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -15,11 +19,12 @@
 
 ;; Some dark themes
 ;;(setq doom-theme 'yukimacs)
-(setq doom-theme 'modus-vivendi-tinted)
+;;(setq doom-theme 'modus-vivendi-tinted)
 ;;(setq doom-theme 'modus-vivendi)
 ;;(setq doom-theme 'doom-one)
 ;;(setq doom-theme 'doom-gruvbox)
 ;;(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-tokyo-night)
 
 ;; Some light themes
 ;;(setq doom-theme 'modus-operandi)
@@ -27,6 +32,8 @@
 ;;(setq doom-theme 'doom-one-light)
 ;;(setq doom-theme 'doom-gruvbox-light)
 ;;(setq doom-theme 'doom-tomorrow-day)
+
+(setq fancy-splash-image "~/.config/doom/banners/yukimacs-logo-classic-smaller.png")
 
 (use-package! indent-bars
   :hook ((prog-mode) . indent-bars-mode)) ; or whichever modes you prefer
@@ -49,8 +56,6 @@
        :desc "Edit doom init.el"     "i" #'(lambda () (interactive) (find-file "~/.config/doom/init.el"))
        :desc "Edit doom packages.el" "p" #'(lambda () (interactive) (find-file "~/.config/doom/packages.el"))))
 
-(show-paren-mode 1)
-
 (defun split-and-follow-horizontally ()
     (interactive)
     (split-window-below)
@@ -65,15 +70,6 @@
     (other-window 1))
 (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
 
-(defun solaire-mode-real-buffer-custom-p ()
-  "Return t if the current buffer is the dashboard or scratch, or is a real (file-visiting) buffer."
-  (cond ((string= (buffer-name (buffer-base-buffer)) "*dashboard*") t)
-        ((string= (buffer-name (buffer-base-buffer)) "*scratch*") t)
-        ((buffer-file-name (buffer-base-buffer)) t)
-        (t nil)))
-(after! solaire-mode
-  (setq solaire-mode-real-buffer-fn #'solaire-mode-real-buffer-custom-p))
-
 (setq lsp-lens-enable nil)
 
 (setq dired-open-extensions '(("jpg" . "nsxiv")
@@ -82,12 +78,12 @@
                               ("mp3" . "mpv")
                               ("mp4" . "mpv")))
 
-(custom-set-faces
-    '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-    '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
-    '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
-    '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
-    '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+(custom-set-faces!
+    '(org-level-1 :inherit outline-1 :height 1.3)
+    '(org-level-2 :inherit outline-2 :height 1.2)
+    '(org-level-3 :inherit outline-3 :height 1.1)
+    '(org-level-4 :inherit outline-4 :height 1.0)
+    '(org-level-5 :inherit outline-5 :height 1.0))
 
 (use-package! org-roam
 :custom
@@ -147,60 +143,7 @@
     ("C-x t t" . treemacs)
     ("C-x t 1" . treemacs-select-window)))
 
-(use-package! dashboard
-:preface
-(defun create-scratch-buffer ()
-    "Create a scratch buffer"
-    (interactive)
-    (switch-to-buffer (get-buffer-create "*scratch*"))
-    (lisp-interaction-mode))
-:config
-(dashboard-setup-startup-hook)
-(dashboard-modify-heading-icons '((recents . "file-text")
-                                    (bookmarks . "book")))
-;(setq dashboard-banner-logo-title "Y U K I M A C S")
-(setq dashboard-banner-logo-title "\n")
-(setq dashboard-startup-banner "~/.config/doom/banners/yukimacs-logo-classic-alt.png")
-(setq dashboard-center-content t)
-;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
-;(setq dashboard-set-footer nil)
-(setq dashboard-footer-messages '("\"It's a Wonderful Everyday!\""))
-(setq dashboard-footer-icon "")
-(setq dashboard-set-navigator t)
-(setq dashboard-set-heading-icons t)
-(setq dashboard-set-file-icons t)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)))
-(setq dashboard-navigator-buttons
-        `(;; line1
-        ((,nil
-            "Yukimacs on GitHub"
-            "Open yukimacs' GitHub on your browser"
-            (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs-doom"))
-            'default)
-            (,nil
-            "Open scratch buffer"
-            "Switch to the scratch buffer"
-            (lambda (&rest _) (create-scratch-buffer))
-            'default)
-            (nil
-            "Open config.org"
-            "Open yukimacs' config file for easy editing"
-              (lambda (&rest _) (find-file "~/.config/doom/config.org"))
-              'default)))))
-  ;; With Emacs as daemon mode, when running `emacsclient`, open *dashboard* instead of *scratch*.
-(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-(setq doom-fallback-buffer-name "*dashboard*")
-
-;(after! company
-;  (setq company-idle-delay 0.5
-;        company-minimum-prefix-length 2)
-;  (setq company-show-numbers t)
-;  (add-hook 'evil-normal-state-entry-hook #'company-abort))
-
 (setq-default history-length 1000)
-(setq-default prescient-history-length 1000)
 
 (use-package! aas
   :commands aas-mode)
@@ -241,26 +184,7 @@
 
 (add-hook 'Info-selection-hook 'info-colors-fontify-node)
 
-(after! python
-  (setq blacken-args '("--line-length" "79" "--skip-string-normalization"))
-  (setq blacken-check-pyproject-thorough t)
-  (add-hook 'python-mode-hook 'blacken-mode))
-
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
-
-;(use-package! org-fragtog
-;  :after! org
-;  :config
-;  (add-hook 'org-mode-hook 'org-fragtog-mode))
-
-; (require 'elcord)
-; (elcord-mode)
+(set-formatter! 'ruff :modes '(python-mode python-ts-mode))
 
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))
@@ -269,23 +193,4 @@
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
 
-(use-package! gptel)
-
-(setq gptel-model 'llama-3.3-70b-versatile
-      gptel-backend
-      (gptel-make-openai "Groq"
-        :host "api.groq.com"
-        :endpoint "/openai/v1/chat/completions"
-        :stream t
-        :key (getenv "GROQ_API_KEY")
-        :models '(llama-3.3-70b-versatile
-                 deepseek-r1-distill-llama-70b)))
-
-(use-package! gptel-quick
-  :after gptel)
-
-(map! :leader
-      "gps" 'gptel-send
-      "gpm" 'gptel-menu
-      "gpr" 'gptel-rewrite
-      "gpq" 'gptel-quick)
+(setq lsp-pyright-langserver-command "basedpyright")
