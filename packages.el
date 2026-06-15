@@ -64,3 +64,6 @@
 (package! modus-themes)
 (package! elcord)
 (package! org-fragtog)
+(package! shell-maker)
+(package! acp)
+(package! agent-shell)

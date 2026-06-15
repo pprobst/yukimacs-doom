@@ -325,6 +325,21 @@ Format-on-save is already enabled via the =(format +onsave)= flag in init.el.
 (set-formatter! 'ruff :modes '(python-mode python-ts-mode))
 #+END_SRC
 
+** Agent-shell
+Interactive shell for ACP-compatible coding agents (Claude, etc.).
+Requires the external =claude-agent-acp= binary on =PATH=:
+=npm install -g @agentclientprotocol/claude-agent-acp=.
+Anthropic uses login-based authentication by default (no API key stored here).
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package! agent-shell
+  :defer t
+  :init
+  (require 'acp)
+  :config
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t)))
+#+END_SRC
+
 * LaTeX
 #+begin_src emacs-lisp :tangle yes
 ;; Change file viewer.

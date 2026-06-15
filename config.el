@@ -186,6 +186,14 @@
 
 (set-formatter! 'ruff :modes '(python-mode python-ts-mode))
 
+(use-package! agent-shell
+  :defer t
+  :init
+  (require 'acp)
+  :config
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t)))
+
 ;; Change file viewer.
 (setq +latex-viewers '(zathura))
 
